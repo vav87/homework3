@@ -1,20 +1,20 @@
 package ru.digitalhabbits.homework3.domain;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
+@EqualsAndHashCode(exclude = "department")
 @Accessors(chain = true)
 @Entity
 @Table(name = "person")
 public class Person {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
     @Column(nullable = false, length = 80)
@@ -28,4 +28,8 @@ public class Person {
 
     @Column
     private Integer age;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
+    private Department department;
 }

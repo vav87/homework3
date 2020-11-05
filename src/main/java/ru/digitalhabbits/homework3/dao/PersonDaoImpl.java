@@ -20,24 +20,32 @@ public class PersonDaoImpl
     public Person findById(@Nonnull Integer id) {
         // TODO: NotImplemented
 //        throw new NotImplementedException();
-        return entityManager.find(Person.class, id);
+        Person p = entityManager.find(Person.class, id);
+        return p;
     }
 
     @Override
     public List<Person> findAll() {
         // TODO: NotImplemented
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
+        List<Person> allPersons = entityManager.createQuery("Select p from Person p", Person.class).getResultList();
+        return allPersons;
     }
 
     @Override
     public Person update(Person entity) {
         // TODO: NotImplemented
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
+        entityManager.persist(entity);
+        return  entity;
     }
 
     @Override
     public Person delete(Integer integer) {
         // TODO: NotImplemented
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
+        Person personToRemove = this.findById(integer);
+        entityManager.remove(personToRemove);
+        return personToRemove;
     }
 }
