@@ -1,0 +1,45 @@
+#script to generate data base
+CREATE TABLE department
+(
+    id     INTEGER NOT NULL CONSTRAINT department_pkey PRIMARY KEY,
+    name   VARCHAR(80) NOT NULL CONSTRAINT idx_department_name UNIQUE,
+    closed BOOLEAN DEFAULT FALSE NOT NULL
+);
+
+CREATE TABLE person
+(
+    id          INTEGER NOT NULL CONSTRAINT person_pkey PRIMARY KEY,
+    first_name  VARCHAR(80) NOT NULL,
+    last_name   VARCHAR(80) NOT NULL,
+    middle_name VARCHAR(80),
+    age         INTEGER,
+    department_id INTEGER,
+    CONSTRAINT person_department_fk FOREIGN KEY (department_id) REFERENCES department (id)
+);
+
+INSERT INTO department VALUES (1, 'Department1', false);
+INSERT INTO department VALUES (2, 'DepartmentB', true);
+INSERT INTO department VALUES (3, 'DepartmentC', false);
+INSERT INTO person VALUES (1, 'Vasiliy', 'Vasiliev', null, 33, 1);
+INSERT INTO person VALUES (2, 'Evgeniy', 'Evgenyev', 'Evgenievich', 32, 1);
+INSERT INTO person VALUES (3, 'Aleksandr', 'Aleksandrov', null, 34, 3);
+INSERT INTO person VALUES (4, 'Dmitriy', 'Dmitriev', 'Dmitrievich', 30, null);
+INSERT INTO person VALUES (5, 'Sergey', 'Sergeev', 'Sergeevich', 33, 3);
+INSERT INTO person VALUES (6, 'Ivan', 'Ivanov', 'Ivanovich', 33, 3);
+
+
+CREATE SEQUENCE person_id_seq;
+Alter table person alter column id set default nextval('person_id_seq');
+alter sequence person_id_seq owned by person.id;
+
+CREATE SEQUENCE department_id_seq;
+Alter table department alter column id set default nextval('department_id_seq');
+alter sequence department_id_seq owned by department.id;
+
+
+docker exec -it 5b89448445e8 sh - старт контейнер интерактивно
+psql -U program homework3 - запуск psql утилиты с пользователем program и подключение к базе homework3
+\l - посмотреть все имеющиеся бд
+\d - посмотреть все таблицы
+\q -выход из psql
+exit - выход их sh
